@@ -49,6 +49,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <time.h>
 
 #ifdef NOBEEP
 #define beep()   {}
@@ -160,7 +161,7 @@ void ProWrite ();
 void ProStatus ();
 
 void Dos33init ();
-char *ip;
+char *ip="127.0.0.1";
 
 /*
  * Base address table for 24 lines of text/lores page 1 ($400..$7F8);
@@ -284,7 +285,7 @@ MegaShutDown ()
   noraw ();
   endwin ();
 
-  fprintf(log,"Stop %s\n",rcsid);
+  fprintf(log,"%d: Stop %s\n",time(NULL),rcsid);
   fflush(log);
 }
 
@@ -641,6 +642,8 @@ GetC000 (addr)
 		      perror ("[-]socket error");
 		      exit (1);
 		    }
+			fprintf(log,"open socket %d\n",sockfd);
+			fflush(log);
 		}
 	      MegaLastKey = (int) data;
 	      return (BYTE) MegaLastKey;

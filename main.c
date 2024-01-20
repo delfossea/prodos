@@ -17,6 +17,7 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <errno.h>
+#include <time.h>
 
 #define SOUT 0x300
 #define REF_DELAY 2000
@@ -26,7 +27,7 @@ extern char prodosroot[];
 extern int port;
 extern FILE * log;
 
-char * rcsid="$Revision: 1.8 $";
+char * rcsid="$Revision: 1.10 $";
 
 void
 usage (char *arg0)
@@ -60,7 +61,7 @@ main (int argc, char **argv)
 		exit(-1);
 	}
 
-	fprintf(log,"Start %s\n",rcsid);
+	fprintf(log,"%d: Start %s\n",time(NULL),rcsid);
 	fflush(log);
 
 /* Load the ROM file */
@@ -179,7 +180,7 @@ main (int argc, char **argv)
 	  memset (&a, '\0', sizeof (a));
 	  a.sin_family = AF_INET;
 	  a.sin_port = htons (port+1);
-	  a.sin_addr.s_addr = inet_addr ("10.59.65.118");
+	  a.sin_addr.s_addr = inet_addr (ip);
 	  buffer[0] = MegaGetMem (SOUT);
 	  if (buffer[0])
 	    {
